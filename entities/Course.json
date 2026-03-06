@@ -1,0 +1,77 @@
+{
+  "name": "Course",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Course name"
+    },
+    "subject": {
+      "type": "string",
+      "description": "Subject/Language (e.g., English, French, Japanese)"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "elementary",
+        "intermediate",
+        "upper_intermediate",
+        "advanced",
+        "proficiency"
+      ],
+      "description": "Course level"
+    },
+    "description": {
+      "type": "string",
+      "description": "Course description"
+    },
+    "teacher_email": {
+      "type": "string",
+      "description": "Assigned teacher email"
+    },
+    "teacher_name": {
+      "type": "string",
+      "description": "Teacher display name"
+    },
+    "classroom": {
+      "type": "string",
+      "description": "Assigned classroom"
+    },
+    "schedule": {
+      "type": "string",
+      "description": "Schedule description (e.g., Mon/Wed/Fri 9:00-10:30)"
+    },
+    "start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "end_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "max_students": {
+      "type": "number",
+      "default": 30
+    },
+    "tuition_fee": {
+      "type": "number",
+      "description": "Tuition fee for the course"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "upcoming",
+        "completed",
+        "cancelled"
+      ],
+      "default": "upcoming"
+    }
+  },
+  "required": [
+    "name",
+    "subject",
+    "level"
+  ]
+}

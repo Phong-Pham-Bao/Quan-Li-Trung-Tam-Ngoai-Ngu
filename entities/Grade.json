@@ -1,0 +1,58 @@
+{
+  "name": "Grade",
+  "type": "object",
+  "properties": {
+    "student_email": {
+      "type": "string"
+    },
+    "student_name": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "course_name": {
+      "type": "string"
+    },
+    "assessment_type": {
+      "type": "string",
+      "enum": [
+        "quiz",
+        "midterm",
+        "final",
+        "assignment",
+        "participation",
+        "speaking",
+        "listening",
+        "reading",
+        "writing"
+      ],
+      "description": "Type of assessment"
+    },
+    "score": {
+      "type": "number",
+      "description": "Score (0-100)"
+    },
+    "max_score": {
+      "type": "number",
+      "default": 100
+    },
+    "comments": {
+      "type": "string"
+    },
+    "graded_by": {
+      "type": "string",
+      "description": "Teacher email who graded"
+    },
+    "grade_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "student_email",
+    "course_id",
+    "assessment_type",
+    "score"
+  ]
+}

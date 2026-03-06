@@ -1,0 +1,44 @@
+{
+  "name": "Notification",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "target_email": {
+      "type": "string",
+      "description": "Target user email, or 'all' for broadcast"
+    },
+    "target_role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "teacher",
+        "student",
+        "all"
+      ],
+      "default": "all"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "info",
+        "warning",
+        "urgent",
+        "reminder"
+      ],
+      "default": "info"
+    },
+    "is_read": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "message"
+  ]
+}

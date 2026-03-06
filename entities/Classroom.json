@@ -1,0 +1,30 @@
+{
+  "name": "Classroom",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Room name/number"
+    },
+    "capacity": {
+      "type": "number"
+    },
+    "equipment": {
+      "type": "string",
+      "description": "Available equipment (projector, whiteboard, etc.)"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "available",
+        "occupied",
+        "maintenance"
+      ],
+      "default": "available"
+    }
+  },
+  "required": [
+    "name",
+    "capacity"
+  ]
+}

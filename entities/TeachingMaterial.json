@@ -1,0 +1,41 @@
+{
+  "name": "TeachingMaterial",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "course_id": {
+      "type": "string"
+    },
+    "course_name": {
+      "type": "string"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "Uploaded file URL"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "document",
+        "video",
+        "audio",
+        "presentation",
+        "worksheet",
+        "other"
+      ],
+      "default": "document"
+    },
+    "uploaded_by": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "course_id"
+  ]
+}
