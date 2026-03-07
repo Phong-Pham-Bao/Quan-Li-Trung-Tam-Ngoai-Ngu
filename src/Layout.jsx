@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import Sidebar from './components/layout/Sidebar';
 import TopBar from './components/layout/TopBar';
+import { useAuth } from '@/lib/AuthContext';
 
 export default function Layout({ children, currentPageName }) {
-  const [user, setUser] = useState(null);
+  const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    const loadUser = async () => {
-      const me = await base44.auth.me();
-      setUser(me);
-
-      const notifications = await base44.entities.Notification.filter({
-        target_email: me.email,
-        is_read: false
-      });
-      setNotificationCount(notifications.length);
+    const loadNotifications = async () => {
+      if (!user?.email) return;
+      try {
+        const notifications = await demoClient.entities.Notification.filter({
+          target_email: user.email,
+          is_read: false
+        });
+        setNotificationCount(notifications.length || 0);
+      } catch (notifError) {
+        console.warn('Failed to load notifications:', notifError);
+        setNotificationCount(0);
+      }
     };
-    loadUser();
-  }, [currentPageName]);
+    loadNotifications();
+  }, [user, currentPageName]);
 
   const role = user?.role || 'student';
 
   const handleLogout = () => {
-    base44.auth.logout();
+    logout();
   };
 
   if (!user) {
@@ -38,6 +42,11 @@ export default function Layout({ children, currentPageName }) {
       </div>
     );
   }
+
+  // Ensure children is a single React element before cloning
+  const content = React.isValidElement(children) 
+    ? React.cloneElement(children, { currentUser: user })
+    : children;
 
   return (
     <div className="min-h-screen bg-background">
@@ -55,7 +64,7 @@ export default function Layout({ children, currentPageName }) {
           notificationCount={notificationCount}
         />
         <main className="flex-1 p-4 lg:p-6">
-          {React.cloneElement(children, { currentUser: user })}
+          {content}
         </main>
       </div>
     </div>

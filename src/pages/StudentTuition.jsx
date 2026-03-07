@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -13,7 +13,7 @@ export default function StudentTuition({ currentUser }) {
 
   const { data: payments = [], isLoading } = useQuery({
     queryKey: ['my-payments', email],
-    queryFn: () => base44.entities.TuitionPayment.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.TuitionPayment.filter({ student_email: email }),
     enabled: !!email,
   });
 

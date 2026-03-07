@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -22,12 +22,12 @@ export default function TuitionManagement() {
   const [editId, setEditId] = useState(null);
   const qc = useQueryClient();
 
-  const { data: payments = [], isLoading } = useQuery({ queryKey: ['payments'], queryFn: () => base44.entities.TuitionPayment.list('-created_date') });
-  const { data: students = [] } = useQuery({ queryKey: ['students'], queryFn: () => base44.entities.User.filter({ role: 'student' }) });
-  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => base44.entities.Course.list() });
+  const { data: payments = [], isLoading } = useQuery({ queryKey: ['payments'], queryFn: () => demoClient.entities.TuitionPayment.list('-created_date') });
+  const { data: students = [] } = useQuery({ queryKey: ['students'], queryFn: () => demoClient.entities.User.filter({ role: 'student' }) });
+  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => demoClient.entities.Course.list() });
 
   const save = useMutation({
-    mutationFn: (d) => editId ? base44.entities.TuitionPayment.update(editId, d) : base44.entities.TuitionPayment.create(d),
+    mutationFn: (d) => editId ? demoClient.entities.TuitionPayment.update(editId, d) : demoClient.entities.TuitionPayment.create(d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['payments'] }); setShowForm(false); setForm(empty); setEditId(null); toast.success('Saved'); },
   });
 

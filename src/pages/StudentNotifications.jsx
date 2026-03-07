@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,9 +23,9 @@ export default function StudentNotifications({ currentUser }) {
   const { data: notifications = [], isLoading } = useQuery({
     queryKey: ['my-notifications', email],
     queryFn: async () => {
-      const personal = await base44.entities.Notification.filter({ target_email: email });
-      const broadcast = await base44.entities.Notification.filter({ target_role: 'student' });
-      const all = await base44.entities.Notification.filter({ target_role: 'all' });
+      const personal = await demoClient.entities.Notification.filter({ target_email: email });
+      const broadcast = await demoClient.entities.Notification.filter({ target_role: 'student' });
+      const all = await demoClient.entities.Notification.filter({ target_role: 'all' });
       const unique = new Map();
       [...personal, ...broadcast, ...all].forEach(n => unique.set(n.id, n));
       return Array.from(unique.values()).sort((a, b) => new Date(b.created_date) - new Date(a.created_date));
@@ -34,7 +34,7 @@ export default function StudentNotifications({ currentUser }) {
   });
 
   const markRead = useMutation({
-    mutationFn: (id) => base44.entities.Notification.update(id, { is_read: true }),
+    mutationFn: (id) => demoClient.entities.Notification.update(id, { is_read: true }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['my-notifications'] }),
   });
 

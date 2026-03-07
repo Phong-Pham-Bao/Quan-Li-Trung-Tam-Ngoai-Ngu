@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -16,17 +16,17 @@ export default function StudentManagement() {
 
   const { data: students = [], isLoading } = useQuery({
     queryKey: ['students'],
-    queryFn: () => base44.entities.User.filter({ role: 'student' }),
+    queryFn: () => demoClient.entities.User.filter({ role: 'student' }),
   });
 
   const { data: enrollments = [] } = useQuery({
     queryKey: ['enrollments'],
-    queryFn: () => base44.entities.Enrollment.list(),
+    queryFn: () => demoClient.entities.Enrollment.list(),
   });
 
   const handleInvite = async () => {
     if (!email) return;
-    await base44.users.inviteUser(email, 'user');
+    await demoClient.users.inviteUser(email, 'student');
     toast.success('Student invitation sent');
     setEmail('');
     setShowInvite(false);

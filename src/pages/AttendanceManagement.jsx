@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import StatusBadge from '../components/shared/StatusBadge';
@@ -16,15 +16,15 @@ export default function AttendanceManagement() {
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const qc = useQueryClient();
 
-  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => base44.entities.Course.list() });
-  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => base44.entities.Enrollment.list() });
-  const { data: attendance = [] } = useQuery({ queryKey: ['attendance'], queryFn: () => base44.entities.Attendance.list('-created_date') });
+  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => demoClient.entities.Course.list() });
+  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => demoClient.entities.Enrollment.list() });
+  const { data: attendance = [] } = useQuery({ queryKey: ['attendance'], queryFn: () => demoClient.entities.Attendance.list('-created_date') });
 
-  const courseStudents = enrollments.filter(e => e.course_id === selectedCourse && e.status === 'active');
-  const course = courses.find(c => c.id === selectedCourse);
+  const courseStudents = enrollments.filter(e => String(e.course_id) === String(selectedCourse) && e.status === 'active');
+  const course = courses.find(c => String(c.id) === String(selectedCourse));
 
   const markAttendance = useMutation({
-    mutationFn: (data) => base44.entities.Attendance.create(data),
+    mutationFn: (data) => demoClient.entities.Attendance.create(data),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['attendance'] }); toast.success('Attendance marked'); },
   });
 
@@ -40,7 +40,7 @@ export default function AttendanceManagement() {
   };
 
   const getExistingAttendance = (email) => {
-    return attendance.find(a => a.student_email === email && a.course_id === selectedCourse && a.date === date);
+    return attendance.find(a => a.student_email === email && String(a.course_id) === String(selectedCourse) && a.date === date);
   };
 
   return (

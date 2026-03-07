@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -20,15 +20,15 @@ export default function ClassroomManagement() {
   const [editId, setEditId] = useState(null);
   const qc = useQueryClient();
 
-  const { data: classrooms = [], isLoading } = useQuery({ queryKey: ['classrooms'], queryFn: () => base44.entities.Classroom.list() });
+  const { data: classrooms = [], isLoading } = useQuery({ queryKey: ['classrooms'], queryFn: () => demoClient.entities.Classroom.list() });
 
   const save = useMutation({
-    mutationFn: (d) => editId ? base44.entities.Classroom.update(editId, d) : base44.entities.Classroom.create(d),
+    mutationFn: (d) => editId ? demoClient.entities.Classroom.update(editId, d) : demoClient.entities.Classroom.create(d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['classrooms'] }); setShowForm(false); setForm(empty); setEditId(null); toast.success('Saved'); },
   });
 
   const del = useMutation({
-    mutationFn: (id) => base44.entities.Classroom.delete(id),
+    mutationFn: (id) => demoClient.entities.Classroom.delete(id),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['classrooms'] }); toast.success('Deleted'); },
   });
 

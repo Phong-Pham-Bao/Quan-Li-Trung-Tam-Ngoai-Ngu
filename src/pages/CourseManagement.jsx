@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -24,18 +24,18 @@ export default function CourseManagement() {
   const [editId, setEditId] = useState(null);
   const queryClient = useQueryClient();
 
-  const { data: courses = [], isLoading } = useQuery({ queryKey: ['courses'], queryFn: () => base44.entities.Course.list('-created_date') });
-  const { data: teachers = [] } = useQuery({ queryKey: ['teachers'], queryFn: () => base44.entities.User.filter({ role: 'teacher' }) });
-  const { data: subjects = [] } = useQuery({ queryKey: ['subjects'], queryFn: () => base44.entities.Subject.list() });
-  const { data: classrooms = [] } = useQuery({ queryKey: ['classrooms'], queryFn: () => base44.entities.Classroom.list() });
+  const { data: courses = [], isLoading } = useQuery({ queryKey: ['courses'], queryFn: () => demoClient.entities.Course.list('-created_date') });
+  const { data: teachers = [] } = useQuery({ queryKey: ['teachers'], queryFn: () => demoClient.entities.User.filter({ role: 'teacher' }) });
+  const { data: subjects = [] } = useQuery({ queryKey: ['subjects'], queryFn: () => demoClient.entities.Subject.list() });
+  const { data: classrooms = [] } = useQuery({ queryKey: ['classrooms'], queryFn: () => demoClient.entities.Classroom.list() });
 
   const saveMutation = useMutation({
-    mutationFn: (data) => editId ? base44.entities.Course.update(editId, data) : base44.entities.Course.create(data),
+    mutationFn: (data) => editId ? demoClient.entities.Course.update(editId, data) : demoClient.entities.Course.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['courses'] }); setShowForm(false); setForm(emptyForm); setEditId(null); toast.success(editId ? 'Course updated' : 'Course created'); },
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Course.delete(id),
+    mutationFn: (id) => demoClient.entities.Course.delete(id),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['courses'] }); toast.success('Course deleted'); },
   });
 

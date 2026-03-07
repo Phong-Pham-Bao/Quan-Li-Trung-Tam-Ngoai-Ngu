@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -21,15 +21,15 @@ export default function SubjectManagement() {
   const [editId, setEditId] = useState(null);
   const qc = useQueryClient();
 
-  const { data: subjects = [], isLoading } = useQuery({ queryKey: ['subjects'], queryFn: () => base44.entities.Subject.list() });
+  const { data: subjects = [], isLoading } = useQuery({ queryKey: ['subjects'], queryFn: () => demoClient.entities.Subject.list() });
 
   const save = useMutation({
-    mutationFn: (d) => editId ? base44.entities.Subject.update(editId, d) : base44.entities.Subject.create(d),
+    mutationFn: (d) => editId ? demoClient.entities.Subject.update(editId, d) : demoClient.entities.Subject.create(d),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['subjects'] }); setShowForm(false); setForm(empty); setEditId(null); toast.success('Saved'); },
   });
 
   const del = useMutation({
-    mutationFn: (id) => base44.entities.Subject.delete(id),
+    mutationFn: (id) => demoClient.entities.Subject.delete(id),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['subjects'] }); toast.success('Deleted'); },
   });
 

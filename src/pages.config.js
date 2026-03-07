@@ -69,10 +69,16 @@ import StudentTuition from './pages/StudentTuition';
 import StudentMaterials from './pages/StudentMaterials';
 import StudentNotifications from './pages/StudentNotifications';
 import Profile from './pages/Profile';
+import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import Register from './pages/Register';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "login": Login,
+    "register": Register,
+    "LandingPage": LandingPage,
     "AdminDashboard": AdminDashboard,
     "TeacherManagement": TeacherManagement,
     "StudentManagement": StudentManagement,
@@ -98,7 +104,7 @@ export const PAGES = {
 }
 
 export const pagesConfig = {
-    mainPage: "AdminDashboard",
+    mainPage: "LandingPage",
     Pages: PAGES,
     Layout: __Layout,
 };

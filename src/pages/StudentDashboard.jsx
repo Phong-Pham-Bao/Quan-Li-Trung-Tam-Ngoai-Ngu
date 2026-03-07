@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import StatCard from '../components/shared/StatCard';
 import StatusBadge from '../components/shared/StatusBadge';
@@ -11,25 +11,25 @@ export default function StudentDashboard({ currentUser }) {
 
   const { data: enrollments = [] } = useQuery({
     queryKey: ['my-enrollments', email],
-    queryFn: () => base44.entities.Enrollment.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.Enrollment.filter({ student_email: email }),
     enabled: !!email,
   });
 
   const { data: grades = [] } = useQuery({
     queryKey: ['my-grades', email],
-    queryFn: () => base44.entities.Grade.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.Grade.filter({ student_email: email }),
     enabled: !!email,
   });
 
   const { data: payments = [] } = useQuery({
     queryKey: ['my-payments', email],
-    queryFn: () => base44.entities.TuitionPayment.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.TuitionPayment.filter({ student_email: email }),
     enabled: !!email,
   });
 
   const { data: notifications = [] } = useQuery({
     queryKey: ['my-notifications', email],
-    queryFn: () => base44.entities.Notification.filter({ target_email: email }),
+    queryFn: () => demoClient.entities.Notification.filter({ target_email: email }),
     enabled: !!email,
   });
 

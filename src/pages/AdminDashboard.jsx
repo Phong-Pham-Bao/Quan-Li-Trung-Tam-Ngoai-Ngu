@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import StatCard from '../components/shared/StatCard';
 import StatusBadge from '../components/shared/StatusBadge';
@@ -10,12 +10,12 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 const COLORS = ['hsl(252,85%,60%)', 'hsl(170,75%,42%)', 'hsl(38,95%,55%)', 'hsl(0,72%,58%)', 'hsl(200,80%,55%)'];
 
 export default function AdminDashboard() {
-  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => base44.entities.Course.list() });
-  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => base44.entities.Enrollment.list() });
-  const { data: payments = [] } = useQuery({ queryKey: ['payments'], queryFn: () => base44.entities.TuitionPayment.list() });
-  const { data: teachers = [] } = useQuery({ queryKey: ['teachers'], queryFn: () => base44.entities.User.filter({ role: 'teacher' }) });
-  const { data: students = [] } = useQuery({ queryKey: ['students'], queryFn: () => base44.entities.User.filter({ role: 'student' }) });
-  const { data: classrooms = [] } = useQuery({ queryKey: ['classrooms'], queryFn: () => base44.entities.Classroom.list() });
+  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => demoClient.entities.Course.list() });
+  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => demoClient.entities.Enrollment.list() });
+  const { data: payments = [] } = useQuery({ queryKey: ['payments'], queryFn: () => demoClient.entities.TuitionPayment.list() });
+  const { data: teachers = [] } = useQuery({ queryKey: ['teachers'], queryFn: () => demoClient.entities.User.filter({ role: 'teacher' }) });
+  const { data: students = [] } = useQuery({ queryKey: ['students'], queryFn: () => demoClient.entities.User.filter({ role: 'student' }) });
+  const { data: classrooms = [] } = useQuery({ queryKey: ['classrooms'], queryFn: () => demoClient.entities.Classroom.list() });
 
   const totalRevenue = payments.filter(p => p.status === 'paid').reduce((s, p) => s + (p.amount || 0), 0);
   const pendingPayments = payments.filter(p => p.status === 'pending' || p.status === 'overdue');

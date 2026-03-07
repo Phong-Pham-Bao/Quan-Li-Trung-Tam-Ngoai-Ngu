@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,9 +8,9 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pi
 const COLORS = ['hsl(252,85%,60%)', 'hsl(170,75%,42%)', 'hsl(38,95%,55%)', 'hsl(0,72%,58%)', 'hsl(200,80%,55%)', 'hsl(280,70%,55%)'];
 
 export default function Statistics() {
-  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => base44.entities.Course.list() });
-  const { data: payments = [] } = useQuery({ queryKey: ['payments'], queryFn: () => base44.entities.TuitionPayment.list() });
-  const { data: attendance = [] } = useQuery({ queryKey: ['attendance'], queryFn: () => base44.entities.Attendance.list() });
+  const { data: courses = [] } = useQuery({ queryKey: ['courses'], queryFn: () => demoClient.entities.Course.list() });
+  const { data: payments = [] } = useQuery({ queryKey: ['payments'], queryFn: () => demoClient.entities.TuitionPayment.list() });
+  const { data: attendance = [] } = useQuery({ queryKey: ['attendance'], queryFn: () => demoClient.entities.Attendance.list() });
 
   const coursesBySubject = courses.reduce((a, c) => { a[c.subject || 'Other'] = (a[c.subject || 'Other'] || 0) + 1; return a; }, {});
   const subjectChart = Object.entries(coursesBySubject).map(([name, value]) => ({ name, value }));

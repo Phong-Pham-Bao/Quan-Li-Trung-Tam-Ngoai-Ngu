@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -13,18 +13,18 @@ export default function TeacherStudents({ currentUser }) {
 
   const { data: courses = [] } = useQuery({
     queryKey: ['my-courses', email],
-    queryFn: () => base44.entities.Course.filter({ teacher_email: email }),
+    queryFn: () => demoClient.entities.Course.filter({ teacher_email: email }),
     enabled: !!email,
   });
 
   const { data: enrollments = [], isLoading } = useQuery({
     queryKey: ['enrollments'],
-    queryFn: () => base44.entities.Enrollment.list(),
+    queryFn: () => demoClient.entities.Enrollment.list(),
   });
 
   const { data: grades = [] } = useQuery({
     queryKey: ['grades'],
-    queryFn: () => base44.entities.Grade.list(),
+    queryFn: () => demoClient.entities.Grade.list(),
   });
 
   const myCourseIds = courses.map(c => c.id);

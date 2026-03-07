@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -34,7 +34,7 @@ export default function Profile({ currentUser }) {
 
   const handleSave = async () => {
     setSaving(true);
-    await base44.auth.updateMe(form);
+    await demoClient.auth.updateMe(form);
     setSaving(false);
     toast.success('Profile updated');
   };

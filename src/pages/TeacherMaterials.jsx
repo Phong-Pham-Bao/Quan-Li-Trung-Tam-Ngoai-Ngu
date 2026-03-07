@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
@@ -23,24 +23,24 @@ export default function TeacherMaterials({ currentUser }) {
 
   const { data: courses = [] } = useQuery({
     queryKey: ['my-courses', email],
-    queryFn: () => base44.entities.Course.filter({ teacher_email: email }),
+    queryFn: () => demoClient.entities.Course.filter({ teacher_email: email }),
     enabled: !!email,
   });
 
   const { data: materials = [], isLoading } = useQuery({
     queryKey: ['materials'],
-    queryFn: () => base44.entities.TeachingMaterial.list('-created_date'),
+    queryFn: () => demoClient.entities.TeachingMaterial.list('-created_date'),
   });
 
   const myMaterials = materials.filter(m => m.uploaded_by === email || courses.some(c => c.id === m.course_id));
 
   const save = useMutation({
-    mutationFn: (d) => base44.entities.TeachingMaterial.create({ ...d, uploaded_by: email }),
+    mutationFn: (d) => demoClient.entities.TeachingMaterial.create({ ...d, uploaded_by: email }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['materials'] }); setShowForm(false); toast.success('Material uploaded'); },
   });
 
   const del = useMutation({
-    mutationFn: (id) => base44.entities.TeachingMaterial.delete(id),
+    mutationFn: (id) => demoClient.entities.TeachingMaterial.delete(id),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['materials'] }); toast.success('Deleted'); },
   });
 
@@ -48,7 +48,7 @@ export default function TeacherMaterials({ currentUser }) {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await demoClient.integrations.Core.UploadFile({ file });
     setForm(f => ({ ...f, file_url }));
     setUploading(false);
   };

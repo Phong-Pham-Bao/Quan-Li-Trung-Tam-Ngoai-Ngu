@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import StatusBadge from '../components/shared/StatusBadge';
@@ -11,13 +11,13 @@ export default function TeacherSchedule({ currentUser }) {
 
   const { data: courses = [], isLoading } = useQuery({
     queryKey: ['my-courses', email],
-    queryFn: () => base44.entities.Course.filter({ teacher_email: email }),
+    queryFn: () => demoClient.entities.Course.filter({ teacher_email: email }),
     enabled: !!email,
   });
 
   const { data: enrollments = [] } = useQuery({
     queryKey: ['enrollments'],
-    queryFn: () => base44.entities.Enrollment.list(),
+    queryFn: () => demoClient.entities.Enrollment.list(),
   });
 
   const activeCourses = courses.filter(c => c.status === 'active' || c.status === 'upcoming');

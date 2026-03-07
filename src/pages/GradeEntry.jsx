@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -23,19 +23,19 @@ export default function GradeEntry({ currentUser }) {
 
   const { data: courses = [] } = useQuery({
     queryKey: ['my-courses', email],
-    queryFn: () => base44.entities.Course.filter({ teacher_email: email }),
+    queryFn: () => demoClient.entities.Course.filter({ teacher_email: email }),
     enabled: !!email,
   });
 
-  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => base44.entities.Enrollment.list() });
-  const { data: grades = [], isLoading } = useQuery({ queryKey: ['grades'], queryFn: () => base44.entities.Grade.list('-created_date') });
+  const { data: enrollments = [] } = useQuery({ queryKey: ['enrollments'], queryFn: () => demoClient.entities.Enrollment.list() });
+  const { data: grades = [], isLoading } = useQuery({ queryKey: ['grades'], queryFn: () => demoClient.entities.Grade.list('-created_date') });
 
-  const myCourseIds = courses.map(c => c.id);
-  const myGrades = grades.filter(g => myCourseIds.includes(g.course_id));
-  const courseStudents = enrollments.filter(e => e.course_id === form.course_id && e.status === 'active');
+  const myCourseIds = courses.map(c => String(c.id));
+  const myGrades = grades.filter(g => myCourseIds.includes(String(g.course_id)));
+  const courseStudents = enrollments.filter(e => String(e.course_id) === String(form.course_id) && e.status === 'active');
 
   const save = useMutation({
-    mutationFn: (d) => base44.entities.Grade.create({ ...d, graded_by: email }),
+    mutationFn: (d) => demoClient.entities.Grade.create({ ...d, graded_by: email }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ['grades'] }); setShowForm(false); setForm(empty); toast.success('Grade saved'); },
   });
 
@@ -60,9 +60,9 @@ export default function GradeEntry({ currentUser }) {
           <div className="space-y-4 pt-2">
             <div className="space-y-1.5">
               <Label>Course</Label>
-              <Select value={form.course_id} onValueChange={v => { const c = courses.find(cr => cr.id === v); setField('course_id', v); setField('course_name', c?.name || ''); }}>
+              <Select value={form.course_id} onValueChange={v => { const c = courses.find(cr => String(cr.id) === String(v)); setField('course_id', v); setField('course_name', c?.name || ''); }}>
                 <SelectTrigger><SelectValue placeholder="Select course" /></SelectTrigger>
-                <SelectContent>{courses.map(c => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}</SelectContent>
+                <SelectContent>{courses.map(c => <SelectItem key={c.id} value={String(c.id)}>{c.name}</SelectItem>)}</SelectContent>
               </Select>
             </div>
             <div className="space-y-1.5">

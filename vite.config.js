@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
-  logLevel: 'error',
+  logLevel: 'info',
   plugins: [react()],
   resolve: {
     alias: {
@@ -15,5 +15,10 @@ export default defineConfig({
     port: 9999,
     strictPort: true,
     open: true,
-  }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.js',
+  },
 });

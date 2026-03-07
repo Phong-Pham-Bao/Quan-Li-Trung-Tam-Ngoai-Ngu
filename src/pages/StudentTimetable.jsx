@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,13 +11,13 @@ export default function StudentTimetable({ currentUser }) {
 
   const { data: enrollments = [] } = useQuery({
     queryKey: ['my-enrollments', email],
-    queryFn: () => base44.entities.Enrollment.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.Enrollment.filter({ student_email: email }),
     enabled: !!email,
   });
 
   const { data: courses = [] } = useQuery({
     queryKey: ['courses'],
-    queryFn: () => base44.entities.Course.list(),
+    queryFn: () => demoClient.entities.Course.list(),
   });
 
   const activeCourses = enrollments

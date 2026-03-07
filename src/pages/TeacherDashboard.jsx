@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import StatCard from '../components/shared/StatCard';
 import StatusBadge from '../components/shared/StatusBadge';
@@ -11,18 +11,18 @@ export default function TeacherDashboard({ currentUser }) {
 
   const { data: courses = [] } = useQuery({
     queryKey: ['my-courses', email],
-    queryFn: () => base44.entities.Course.filter({ teacher_email: email }),
+    queryFn: () => demoClient.entities.Course.filter({ teacher_email: email }),
     enabled: !!email,
   });
 
   const { data: enrollments = [] } = useQuery({
     queryKey: ['enrollments'],
-    queryFn: () => base44.entities.Enrollment.list(),
+    queryFn: () => demoClient.entities.Enrollment.list(),
   });
 
   const { data: attendance = [] } = useQuery({
     queryKey: ['my-attendance', email],
-    queryFn: () => base44.entities.Attendance.filter({ marked_by: email }),
+    queryFn: () => demoClient.entities.Attendance.filter({ marked_by: email }),
     enabled: !!email,
   });
 

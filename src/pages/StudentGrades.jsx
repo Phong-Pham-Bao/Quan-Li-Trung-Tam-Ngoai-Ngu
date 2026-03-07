@@ -1,5 +1,5 @@
 import React from 'react';
-import { base44 } from '@/api/base44Client';
+import { demoClient } from '@/api/demoClient';
 import { useQuery } from '@tanstack/react-query';
 import PageHeader from '../components/shared/PageHeader';
 import DataTable from '../components/shared/DataTable';
@@ -11,7 +11,7 @@ export default function StudentGrades({ currentUser }) {
 
   const { data: grades = [], isLoading } = useQuery({
     queryKey: ['my-grades', email],
-    queryFn: () => base44.entities.Grade.filter({ student_email: email }),
+    queryFn: () => demoClient.entities.Grade.filter({ student_email: email }),
     enabled: !!email,
   });
 
